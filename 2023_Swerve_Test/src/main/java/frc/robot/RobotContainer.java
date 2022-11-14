@@ -4,9 +4,10 @@
 
 package frc.robot;
 
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
+import frc.robot.commands.Autonomous;
 import frc.robot.commands.SwerveDrive;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.SwerveModule;
@@ -27,19 +28,22 @@ public class RobotContainer {
   private SwerveModule frontRight;
   private SwerveModule frontLeft;      
 
-  private DriveTrain swerveDrive;                                          
+  private DriveTrain swerveDrive; 
+  
+  private XboxController xbC;
   
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     c = new Constants();
-    backRight = new SwerveModule (c.BACK_RIGHT_ANGLE_PORT, c.BACK_RIGHT_SPEED_PORT, c.BACK_RIGHT_ENCODER_PORT);
-    backLeft = new SwerveModule (c.BACK_LEFT_ANGLE_PORT, c.BACK_LEFT_SPEED_PORT, c.BACK_LEFT_ENCODER_PORT);
-    frontRight = new SwerveModule (c.FRONT_RIGHT_ANGLE_PORT, c.FRONT_RIGHT_SPEED_PORT, c.FRONT_RIGHT_ENCODER_PORT);
-    frontLeft = new SwerveModule (c.FRONT_LEFT_ANGLE_PORT, c.FRONT_LEFT_SPEED_PORT, c.FRONT_LEFT_ENCODER_PORT);
+    backRight = new SwerveModule (c.BACK_RIGHT_ANGLE_ID, c.BACK_RIGHT_SPEED_ID, c.BACK_RIGHT_ENCODER_ID);
+    backLeft = new SwerveModule (c.BACK_LEFT_ANGLE_ID, c.BACK_LEFT_SPEED_ID, c.BACK_LEFT_ENCODER_ID);
+    frontRight = new SwerveModule (c.FRONT_RIGHT_ANGLE_ID, c.FRONT_RIGHT_SPEED_ID, c.FRONT_RIGHT_ENCODER_ID);
+    frontLeft = new SwerveModule (c.FRONT_LEFT_ANGLE_ID, c.FRONT_LEFT_SPEED_ID, c.FRONT_LEFT_ENCODER_ID);
     swerveDrive = new DriveTrain (backRight, backLeft, frontRight, frontLeft); 
-    swerveDrive.setDefaultCommand(new SwerveDrive(swerveDrive));
+    xbC= new XboxController(Constants.XB_CONTROLLER_PORT);
+    swerveDrive.setDefaultCommand(new SwerveDrive(swerveDrive, xbC));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -51,10 +55,6 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    XboxController xbC= new XboxController(Constants.XB_CONTROLLER_PORT);
-    public double asdad(Hand hand){
-      return xbC.getX(hand);
-    }
   }
 
   /**
@@ -64,6 +64,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return new Autonomous();
   }
 }

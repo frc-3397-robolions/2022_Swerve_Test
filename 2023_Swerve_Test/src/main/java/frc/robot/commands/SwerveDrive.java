@@ -4,26 +4,25 @@
 
 package frc.robot.commands;
 
-import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
 public class SwerveDrive extends CommandBase {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final DriveTrain m_subsystem;
-  private double x1, y1, x2;
+  private XboxController controller;
  
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public SwerveDrive(DriveTrain subsystem, x1, y1, x2) {
+  public SwerveDrive(DriveTrain subsystem, XboxController controller) {
     m_subsystem = subsystem;
-    this.x1=x1;
-    this.y1=y1;
-    this.x2=x2;
+    this.controller=controller;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -35,7 +34,7 @@ public class SwerveDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.drive(x1, y1, x2);
+    m_subsystem.drive(controller.getX(Hand.kLeft),controller.getY(Hand.kLeft), controller.getX(Hand.kRight));
   }
 
   // Called once the command ends or is interrupted.
