@@ -17,14 +17,14 @@ public final class Constants {
     public final static double ROBOT_LENGTH = 20;
     public final static double ROBOT_WIDTH = 20;
 
-    public final int BACK_LEFT_ANGLE_ID = 4;
-    public final int BACK_LEFT_SPEED_ID = 5;
-    public final int BACK_RIGHT_ANGLE_ID = 6;
-    public final int BACK_RIGHT_SPEED_ID = 7;
-    public final int FRONT_LEFT_ANGLE_ID = 2;
-    public final int FRONT_LEFT_SPEED_ID = 3;
-    public final int FRONT_RIGHT_ANGLE_ID = 0;
-    public final int FRONT_RIGHT_SPEED_ID = 1;
+    public final int BACK_LEFT_ANGLE_ID = 3;
+    public final int BACK_LEFT_SPEED_ID = 4;
+    public final int BACK_RIGHT_ANGLE_ID = 5;
+    public final int BACK_RIGHT_SPEED_ID = 6;
+    public final int FRONT_LEFT_ANGLE_ID = 7;
+    public final int FRONT_LEFT_SPEED_ID = 8;
+    public final int FRONT_RIGHT_ANGLE_ID = 1;
+    public final int FRONT_RIGHT_SPEED_ID = 2;
 
     public final static int XB_CONTROLLER_PORT = 0;
 
