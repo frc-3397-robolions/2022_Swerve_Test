@@ -33,8 +33,7 @@ public class SwerveDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //m_subsystem.drive(controller.getLeftX(),controller.getLeftY(), controller.getRightX());
-    m_subsystem.drive(0.5,0, 0);
+    m_subsystem.drive(controller.getLeftX(),controller.getLeftY(), controller.getRightX());
   }
 
   // Called once the command ends or is interrupted.

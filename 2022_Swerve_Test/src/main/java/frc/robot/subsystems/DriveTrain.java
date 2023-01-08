@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -41,11 +42,12 @@ public void drive(double x1, double y1, double x2){
   double backLeftAngle = Math.atan2(a, c) / Math.PI;
   double frontRightAngle = Math.atan2(b, d) / Math.PI;
   double frontLeftAngle = Math.atan2(b, c) / Math.PI;
+  SmartDashboard.putNumber("frontLeftAngle", frontLeftAngle);
 
   backRight.drive(backRightSpeed, backRightAngle);
   backLeft.drive(backLeftSpeed, backLeftAngle);
   frontLeft.drive(frontLeftSpeed, frontLeftAngle);
-  frontRight.drive(frontRightSpeed, frontRightAngle);
+  frontRight.drive(-frontRightSpeed, frontRightAngle);
 }
 
   @Override
