@@ -33,7 +33,12 @@ public class SwerveDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.drive(controller.getLeftX(),controller.getLeftY(), controller.getRightX());
+    m_subsystem.drive(applyDeadband(controller.getLeftX(),0.2),applyDeadband(controller.getLeftY(),0.2), applyDeadband(controller.getRightX(),0.2));
+  }
+  public double applyDeadband(double x, double deadband){
+    if(x<=deadband || x>=deadband)
+      return x;
+    return 0;
   }
 
   // Called once the command ends or is interrupted.
