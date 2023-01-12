@@ -26,6 +26,7 @@ public class SwerveModule extends SubsystemBase {
   private String name;
   private double MAX_VOLTS = Constants.SWERVE_MAX_VOLTS;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
+
   /** Creates a new SwerveModule. */
   public SwerveModule(int angleMotorPort, int speedMotorPort, String name) {
     this.angleMotor = new CANSparkMax(angleMotorPort, MotorType.kBrushless);
@@ -34,15 +35,15 @@ public class SwerveModule extends SubsystemBase {
     speedMotor.restoreFactoryDefaults();
     this.pidController = angleMotor.getPIDController();
     this.encoder = angleMotor.getEncoder();
-    //encoder.setPositionConversionFactor(360/21);
-    this.name=name;
+    encoder.setPositionConversionFactor(360 / 21);
+    this.name = name;
     pidController.setFeedbackDevice(encoder);
-    kP = 0.01; 
+    kP = 0.01;
     kI = 0;
-    kD = 0; 
-    kIz = 0; 
-    kFF = 0; 
-    kMaxOutput = 1; 
+    kD = 0;
+    kIz = 0;
+    kFF = 0;
+    kMaxOutput = 1;
     kMinOutput = -1;
 
     pidController.setP(kP);
@@ -52,14 +53,16 @@ public class SwerveModule extends SubsystemBase {
     pidController.setFF(kFF);
     pidController.setOutputRange(kMinOutput, kMaxOutput);
   }
+
   public void drive(SwerveModuleState state) {
-    var optimizedstate= SwerveModuleState.optimize(state, Rotation2d.fromDegrees(encoder.getPosition()/21*360));;
-    double targetAngle=-optimizedstate.angle.getDegrees();
-    speedMotor.set(optimizedstate.speedMetersPerSecond/4);
-    pidController.setReference(targetAngle/360*21, CANSparkMax.ControlType.kPosition);
-    SmartDashboard.putNumber(name, encoder.getPosition()/21*360);
-}
-  public void zeroWheels(){
+    var optimizedstate = SwerveModuleState.optimize(state, Rotation2d.fromDegrees(-encoder.getPosition()));
+    double targetAngle = -optimizedstate.angle.getDegrees();
+    speedMotor.set(optimizedstate.speedMetersPerSecond / 4);
+    pidController.setReference(targetAngle, CANSparkMax.ControlType.kPosition);
+    SmartDashboard.putNumber(name, encoder.getPosition());
+  }
+
+  public void zeroWheels() {
     encoder.setPosition(0);
   }
 
