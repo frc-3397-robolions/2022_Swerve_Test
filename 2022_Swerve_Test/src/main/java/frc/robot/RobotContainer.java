@@ -7,8 +7,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.SwerveDrive;
+import frc.robot.commands.ZeroWheels;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.SwerveModule;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -37,13 +39,14 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     c = new Constants();
-    backRight = new SwerveModule (c.BACK_RIGHT_ANGLE_ID, c.BACK_RIGHT_SPEED_ID);
-    backLeft = new SwerveModule (c.BACK_LEFT_ANGLE_ID, c.BACK_LEFT_SPEED_ID);
-    frontRight = new SwerveModule (c.FRONT_RIGHT_ANGLE_ID, c.FRONT_RIGHT_SPEED_ID);
-    frontLeft = new SwerveModule (c.FRONT_LEFT_ANGLE_ID, c.FRONT_LEFT_SPEED_ID);
+    backRight = new SwerveModule(c.BACK_RIGHT_ANGLE_ID, c.BACK_RIGHT_SPEED_ID, "br");
+    backLeft = new SwerveModule(c.BACK_LEFT_ANGLE_ID, c.BACK_LEFT_SPEED_ID, "bl");
+    frontRight = new SwerveModule(c.FRONT_RIGHT_ANGLE_ID, c.FRONT_RIGHT_SPEED_ID, "fr");
+    frontLeft = new SwerveModule(c.FRONT_LEFT_ANGLE_ID, c.FRONT_LEFT_SPEED_ID, "fl");
     swerveDrive = new DriveTrain (backRight, backLeft, frontRight, frontLeft); 
     xbC= new XboxController(Constants.XB_CONTROLLER_PORT);
     swerveDrive.setDefaultCommand(new SwerveDrive(swerveDrive, xbC));
+    SmartDashboard.putData("Zero Wheels", new ZeroWheels(swerveDrive));
     // Configure the button bindings
     configureButtonBindings();
   }
