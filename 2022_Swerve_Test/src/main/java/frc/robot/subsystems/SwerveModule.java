@@ -5,8 +5,12 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -18,19 +22,22 @@ public class SwerveModule extends SubsystemBase {
   private CANSparkMax angleMotor;
   private CANSparkMax speedMotor;
   private SparkMaxPIDController pidController;
-  private RelativeEncoder encoder;
+  public RelativeEncoder encoder;
+  private String name;
   private double MAX_VOLTS = Constants.SWERVE_MAX_VOLTS;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
   /** Creates a new SwerveModule. */
-  public SwerveModule(int angleMotorPort, int speedMotorPort) {
+  public SwerveModule(int angleMotorPort, int speedMotorPort, String name) {
     this.angleMotor = new CANSparkMax(angleMotorPort, MotorType.kBrushless);
     angleMotor.restoreFactoryDefaults();
     this.speedMotor = new CANSparkMax(speedMotorPort, MotorType.kBrushless);
     speedMotor.restoreFactoryDefaults();
     this.pidController = angleMotor.getPIDController();
     this.encoder = angleMotor.getEncoder();
-
-    kP = 1; 
+    //encoder.setPositionConversionFactor(360/21);
+    this.name=name;
+    pidController.setFeedbackDevice(encoder);
+    kP = 0.01; 
     kI = 0;
     kD = 0; 
     kIz = 0; 
@@ -38,7 +45,6 @@ public class SwerveModule extends SubsystemBase {
     kMaxOutput = 1; 
     kMinOutput = -1;
 
-    pidController.setFeedbackDevice(encoder);
     pidController.setP(kP);
     pidController.setI(kI);
     pidController.setD(kD);
@@ -46,17 +52,21 @@ public class SwerveModule extends SubsystemBase {
     pidController.setFF(kFF);
     pidController.setOutputRange(kMinOutput, kMaxOutput);
   }
-  public void drive (double speed, double angle) {
-    speedMotor.setVoltage(speed);
-    pidController.setReference(angle, CANSparkMax.ControlType.kPosition);
+  public void drive(SwerveModuleState state) {
+    var optimizedstate= SwerveModuleState.optimize(state, Rotation2d.fromDegrees(encoder.getPosition()/21*360));;
+    double targetAngle=-optimizedstate.angle.getDegrees();
+    speedMotor.set(optimizedstate.speedMetersPerSecond/4);
+    pidController.setReference(targetAngle/360*21, CANSparkMax.ControlType.kPosition);
+    SmartDashboard.putNumber(name, encoder.getPosition()/21*360);
 }
+  public void zeroWheels(){
+    encoder.setPosition(0);
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    double p=SmartDashboard.getNumber("kP", 0);
-    SmartDashboard.putNumber("kP", kP);
-    if(p!=kP)
-    kP=p;
+    SmartDashboard.putData(this);
+    SmartDashboard.putNumber("key", encoder.getVelocity());
   }
 }
