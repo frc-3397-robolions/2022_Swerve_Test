@@ -12,7 +12,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.I2C.Port;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -51,6 +50,9 @@ public void drive(double y, double x, double rot){
   frontRight.drive(moduleStates[1]);
   backLeft.drive(moduleStates[2]);
   backRight.drive(moduleStates[3]);
+}
+public void resetGyro(){
+  gyro.zeroYaw();
 }
 public void zeroWheels(){
   frontLeft.zeroWheels();

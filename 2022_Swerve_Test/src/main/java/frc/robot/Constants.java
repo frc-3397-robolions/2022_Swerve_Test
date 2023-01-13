@@ -27,6 +27,8 @@ public final class Constants {
     public static final int FRONT_RIGHT_SPEED_ID = 1;
 
     public final static int XB_CONTROLLER_PORT = 0;
+    public static final int ARM_MOTOR_1_ID = 0;
+    public static final int ARM_MOTOR_2_ID = 1;
 
 
 }

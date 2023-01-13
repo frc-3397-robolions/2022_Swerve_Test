@@ -34,6 +34,8 @@ public class SwerveDrive extends CommandBase {
   @Override
   public void execute() {
     m_subsystem.drive(applyDeadband(controller.getLeftX(),0.2),applyDeadband(controller.getLeftY(),0.2), applyDeadband(controller.getRightX(),0.2));
+    if(controller.getBackButtonPressed())
+    m_subsystem.resetGyro();
   }
   public double applyDeadband(double x, double deadband){
     if(x<=deadband || x>=deadband)
